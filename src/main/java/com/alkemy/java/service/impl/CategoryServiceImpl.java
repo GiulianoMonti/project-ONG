@@ -1,13 +1,17 @@
+
 package com.alkemy.java.service.impl;
 
-import com.alkemy.java.dto.*;
+import com.alkemy.java.dto.CategoryRequestDto;
+import com.alkemy.java.dto.CategoryResponseDto;
 import com.alkemy.java.exception.BadRequestException;
 import com.alkemy.java.exception.ResourceNotFoundException;
 import com.alkemy.java.model.Category;
+import com.alkemy.java.dto.CategoryProjectionDto;
 import com.alkemy.java.repository.CategoryRepository;
 import com.alkemy.java.service.ICategoryService;
-
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import javassist.NotFoundException;
 import org.modelmapper.ModelMapper;
@@ -17,8 +21,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Service
 public class CategoryServiceImpl implements ICategoryService {
@@ -59,8 +61,7 @@ public class CategoryServiceImpl implements ICategoryService {
         Category category = categoryRepository.findByName(categoryRequest.getName());
 
         if (category != null)
-            throw new BadRequestException(messageSource.getMessage
-                    (errorBadRequest, null, Locale.getDefault()));
+            throw new BadRequestException(messageSource.getMessage(errorBadRequest, null, Locale.getDefault()));
 
         category = mapToEntity(categoryRequest);
         category.setCreateDate(new Date());
@@ -84,27 +85,8 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public PageDto<CategoryListRespDto> getPageableCategory(Pageable pageable, HttpServletRequest request) {
-
-        Map<String,String> links = new HashMap<>();
-
-        PageDto<CategoryListRespDto> pageDto = new PageDto<>();
-
-        Page <Category> pageList = categoryRepository.findAll(pageable);
-
-        List<CategoryListRespDto> responseDto = new ArrayList<>();
-        pageList.getContent().forEach(element -> responseDto.add
-                (mapper.map(element,CategoryListRespDto.class)));
-
-        links.put("next",pageList.hasNext()?makePaginationLink(request,pageable.getPageNumber()+1):"");
-        links.put("previous",pageList.hasPrevious()?makePaginationLink(request,pageable.getPageNumber()-1):"");
-
-        pageDto.setLinks(links);
-        pageDto.setContent(responseDto);
-
-        return pageDto;
-
-
+    public Page<CategoryProjectionDto> getPageableCategory(Pageable pageable) {
+        return categoryRepository.getName(pageable);
     }
 
     @Override
@@ -131,8 +113,4 @@ public class CategoryServiceImpl implements ICategoryService {
 
         return mapper.map(categoryRequest,Category.class );
     }
-    private String makePaginationLink(HttpServletRequest request, int page) {
-        return String.format("%s?page=%d", request.getRequestURI(), page);
-    }
-
 }

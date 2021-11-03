@@ -147,7 +147,6 @@ class CategoryControllerTest {
         PageDto<CategoryListRespDto> pageDto = new PageDto<>();
 
         pageDto.setContent(Arrays.asList(categoryDto1,categoryDto2));
-           when(categoryService.getPageableCategory(any(Pageable.class), any(HttpServletRequest.class))).thenReturn(pageDto);
 
         mockMvc.perform(get("/categories")
                 .accept(MediaType.APPLICATION_JSON))
