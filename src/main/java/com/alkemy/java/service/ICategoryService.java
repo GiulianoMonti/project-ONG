@@ -1,6 +1,7 @@
 
 package com.alkemy.java.service;
 
+import com.alkemy.java.dto.CategoryListRespDto;
 import com.alkemy.java.dto.CategoryRequestDto;
 import com.alkemy.java.dto.CategoryResponseDto;
 import com.alkemy.java.model.Category;
@@ -19,5 +20,6 @@ public interface ICategoryService {
     void deleteCategory(Long id);
     CategoryResponseDto updateCategory(CategoryResponseDto dto, Long id);
     List<Category> findAllCategories();
-    Page<CategoryProjectionDto> getPageableCategory(Pageable pageable);
+
+    Page<CategoryListRespDto> getPageableCategory(Pageable pageable);
 }

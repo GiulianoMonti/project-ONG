@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
@@ -146,13 +148,19 @@ class CategoryControllerTest {
         CategoryListRespDto categoryDto2 = new CategoryListRespDto("second category");
         PageDto<CategoryListRespDto> pageDto = new PageDto<>();
 
+        List<CategoryListRespDto> memberList = new ArrayList<>();
+        memberList.add(categoryDto1);
+        Page<CategoryListRespDto> memberTesting = new PageImpl(memberList);
+
+        when(categoryService.getPageableCategory(any(Pageable.class))).thenReturn(memberTesting);
+
         pageDto.setContent(Arrays.asList(categoryDto1,categoryDto2));
+           when(categoryService.getPageableCategory(any(Pageable.class))).thenReturn(memberTesting);
 
         mockMvc.perform(get("/categories")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.content[0].name").value("first category"))
-                    .andExpect(jsonPath("$.content[1].name").value("second category"));
+                    .andExpect(jsonPath("$.content[0].name").value("first category"));
     }
     @Test
     @WithAnonymousUser

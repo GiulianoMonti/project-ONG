@@ -79,12 +79,12 @@ public class CategoryController {
                                             @RequestParam(value = "page", defaultValue = "0") int page,HttpServletRequest request) {
         try {
 
-            Page<CategoryProjectionDto> result = iCategoryService.getPageableCategory(pageable);
+            Page<CategoryListRespDto> result = iCategoryService.getPageableCategory(pageable);
             Map<String, String> links = utilPagination.linksPagination(request, result);
             if (page >= result.getTotalPages() | page < 0)
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(messageSource.getMessage(paginationError, null, Locale.getDefault()));
 
-            PageDto<CategoryProjectionDto> response = new PageDto<>();
+            PageDto<CategoryListRespDto> response = new PageDto<>();
             response.setContent(result.getContent());
             response.setLinks(links);
 
