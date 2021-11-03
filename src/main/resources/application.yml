@@ -1,6 +1,6 @@
 amazonProperties:
   endpointUrl: https://s3.sa-east-1.amazonaws.com
-  accessKey: AKIAULUDYSGLHDXZOCF4
-  secretKey: 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
+  accessKey:
+  secretKey:
   bucketName: spring-bug
   region: sa-east-1
