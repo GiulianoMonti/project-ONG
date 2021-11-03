@@ -7,10 +7,7 @@ package com.alkemy.java.exception;
 
 import org.springframework.validation.BindingResult;
 
-/**
- *
- * @author Mariela
- */
+
 public class InvalidDataException extends RuntimeException{
     private static final long serialVersionUID = 1L;
 
