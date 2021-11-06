@@ -5,7 +5,6 @@ import com.alkemy.java.config.MessagesConfig;
 import com.alkemy.java.dto.MemberDto;
 import com.alkemy.java.dto.MemberRequestDto;
 import com.alkemy.java.dto.MemberResponseDto;
-import com.alkemy.java.exception.ConflictException;
 import com.alkemy.java.exception.ResourceNotFoundException;
 import com.alkemy.java.model.Member;
 import com.alkemy.java.repository.MemberRepository;
@@ -13,7 +12,6 @@ import com.alkemy.java.service.IMemberService;
 import com.alkemy.java.util.UtilPagination;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javassist.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -118,7 +116,7 @@ class MemberControllerTest {
     void getAllMembers() throws Exception {
         List<MemberResponseDto> memberList = new ArrayList<>();
         memberList.add(responseDto);
-        Page<MemberDto> memberTesting = new PageImpl(memberList);
+        PageImpl memberTesting = new PageImpl(memberList);
 
         when(service.getAllMembersPageable(any(Pageable.class))).thenReturn(memberTesting);
 
